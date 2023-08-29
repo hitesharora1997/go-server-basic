@@ -56,10 +56,12 @@ func checkErr(err error) {
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	r.Get("/", homeHandler)
+	r.Get("/", homeHandler)	"gopkg.in/mgo.v2"
+ 
 	r.Mount("/todo", todoHandler())
+
 }
 
 func todoHandler() http.Handler {
-
+	rg := chi.NewRouter()
 }
