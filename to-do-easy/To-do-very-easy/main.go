@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"time"
 
 	"github.com/thedevsaddam/renderer"
@@ -41,5 +42,10 @@ func init() {
 	sess, err := mgo.Dial(hostname)
 	checkErr(err)
 	db = sess.DB(dbName)
+}
 
+func checkErr(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
 }
