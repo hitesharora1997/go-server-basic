@@ -5,6 +5,7 @@ import (
 
 	"github.com/thedevsaddam/renderer"
 	"gopkg.in/mgo.v2"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
@@ -26,8 +27,19 @@ type ( // meed to look on my own
 		Completed bool          `"bson:completed"`
 		CreatedAt time.Time     `"bson:createdAt"`
 	}
+	todo struct {
+		ID        bson.ObjectId `"json:_id"` // use of back ticks here
+		Title     string        `"json: title"`
+		Completed bool          `"json:completed"`
+		CreatedAt time.Time     `"json:created_at"`
+	}
 )
 
-func main() {
-	println("hello")
+// This function is there to interact with the database
+func init() {
+	rnd = renderer.New()
+	sess, err := mgo.Dial(hostname)
+	checkErr(err)
+	db = sess.DB(dbName)
+
 }
