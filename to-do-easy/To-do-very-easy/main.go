@@ -2,16 +2,18 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"time"
 
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/thedevsaddam/renderer"
-	"gopkg.in/mgo.v2"
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
 var rnd *renderer.Render
-var db *mgo.Database // mongo db
+var db mgo.Database // mongo db
 
 // My custom struct
 const (
@@ -41,11 +43,23 @@ func init() {
 	rnd = renderer.New()
 	sess, err := mgo.Dial(hostname)
 	checkErr(err)
-	db = sess.DB(dbName)
+	db = *sess.DB(dbName)
+
 }
 
 func checkErr(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func main() {
+	r := chi.NewRouter()
+	r.Use(middleware.Logger)
+	r.Get("/", homeHandler)
+	r.Mount("/todo", todoHandler())
+}
+
+func todoHandler() http.Handler {
+
 }
