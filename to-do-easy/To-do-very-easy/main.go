@@ -43,7 +43,7 @@ func init() {
 	rnd = renderer.New()
 	sess, err := mgo.Dial(hostname)
 	checkErr(err)
-	sess.SetMode(mgo.Monotonic,true)
+	sess.SetMode(mgo.Monotonic, true)
 	db = *sess.DB(dbName)
 
 }
@@ -57,12 +57,29 @@ func checkErr(err error) {
 func main() {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
-	r.Get("/", homeHandler)	"gopkg.in/mgo.v2"
- 
+	// r.Get("/", homeHandler)
+
 	r.Mount("/todo", todoHandler())
+
+	srv := http.Server{
+		Addr:         port,
+		Handler:      r,
+		ReadTimeout:  60 * time.Second,
+		WriteTimeout: 60 * time.Second,
+		IdleTimeout:  60 * time.Second,
+	}
+	go func() {
+		log.Println("Listening on the port", port)
+		if err := srv.ListenAndServe(); err != nil {
+			log.Println("listen: %s\n", err)
+		}
+	}()
 
 }
 
 func todoHandler() http.Handler {
 	rg := chi.NewRouter()
+	rg.Group(func(r chi.Router))
+	// 	r.Get
+	// }
 }
