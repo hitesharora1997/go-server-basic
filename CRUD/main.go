@@ -25,6 +25,9 @@ var movie []Movie // movie is the array of the struct movie
 func main() {
 	r := mux.NewRouter()
 
+	movie = append(movie, Movie{Id: "1", Isbn: "438227", Title: "Movie one", Director: &Director{Firstname: "Hitesh", Lastname: "Arora"}})
+	movie = append(movie, Movie{Id: "1", Isbn: "45455", Title: "Movie Two", Director: &Director{Firstname: "John", Lastname: "Stell"}})
+
 	r.HandleFunc("/movies", getMovies).Methods("GET")
 	r.HandleFunc("/movies/{id}", getMovie).Methods("GET")
 	r.HandleFunc("/movies", createMovie).Methods("POST")
